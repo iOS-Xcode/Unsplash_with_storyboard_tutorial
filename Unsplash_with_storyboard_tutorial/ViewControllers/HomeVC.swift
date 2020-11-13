@@ -7,8 +7,9 @@
 
 import UIKit
 import Toast_Swift
+import Alamofire
 
-class HomeVC: UIViewController, UISearchBarDelegate, UIGestureRecognizerDelegate {
+class HomeVC: BaseVC, UISearchBarDelegate, UIGestureRecognizerDelegate {
     
     var keyboardDismissTapGesture : UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: nil)
     
@@ -18,7 +19,43 @@ class HomeVC: UIViewController, UISearchBarDelegate, UIGestureRecognizerDelegate
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     @IBAction func tappesSearchButton(_ sender: UIButton) {
-        pushVC()
+//        AF.request("https://api.unsplash.com/search/photos").response {
+//            response in
+//            debugPrint(response)
+//        }
+        //let url = API.BASE_URL + "search/photos"
+        guard let userInput = searchBar.text else {
+            return
+        }
+        //key-value param
+        //let queryParam = ["query" : userInput, "client_id" : API.CLIENTID]
+        //This is a simple way to use Alamofire.
+//        AF.request(url, method: .get, parameters: queryParam).responseJSON(completionHandler: {
+//            response in
+//            debugPrint(response)
+//        })
+        var urlToCall : URLRequestConvertible?
+        
+        switch searchSegment.selectedSegmentIndex {
+        case 0:
+            urlToCall = SearchRouter.searchPhotos(term: userInput)
+        default:
+            urlToCall = SearchRouter.searchUsers(term: userInput)
+        }
+        
+        if let urlConvertible = urlToCall {
+            //For use router, header and public params
+        AlamofireManager
+            .shared
+            .session
+            .request(urlConvertible)
+            //
+            .validate(statusCode: 200..<401)
+            .responseJSON(completionHandler: { response in
+                debugPrint(response)
+            })
+        //pushVC()
+    }
     }
     
     @IBAction func filterValueChanged(_ sender: UISegmentedControl) {

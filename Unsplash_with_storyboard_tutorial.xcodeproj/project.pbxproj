@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		7B9CE12EB623E383854D095D /* Pods_Unsplash_with_storyboard_tutorial.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 343A5A044700D38B295B1CE0 /* Pods_Unsplash_with_storyboard_tutorial.framework */; };
+		B918D728255F0ECB0044A2B2 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B918D727255F0ECB0044A2B2 /* Photo.swift */; };
+		B918D72C255F0F7A0044A2B2 /* ErrorHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B918D72B255F0F7A0044A2B2 /* ErrorHandle.swift */; };
 		B948CB64255C5EAB006118CF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B948CB63255C5EAB006118CF /* Constants.swift */; };
 		B948CB67255C61E3006118CF /* BaseVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B948CB66255C61E3006118CF /* BaseVC.swift */; };
 		B948CB6D255C7AAD006118CF /* screenshot3.png in Resources */ = {isa = PBXBuildFile; fileRef = B948CB69255C7AAD006118CF /* screenshot3.png */; };
@@ -32,6 +34,8 @@
 /* Begin PBXFileReference section */
 		343A5A044700D38B295B1CE0 /* Pods_Unsplash_with_storyboard_tutorial.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Unsplash_with_storyboard_tutorial.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B6652F51C5C7910AC117207 /* Pods-Unsplash_with_storyboard_tutorial.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Unsplash_with_storyboard_tutorial.debug.xcconfig"; path = "Target Support Files/Pods-Unsplash_with_storyboard_tutorial/Pods-Unsplash_with_storyboard_tutorial.debug.xcconfig"; sourceTree = "<group>"; };
+		B918D727255F0ECB0044A2B2 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
+		B918D72B255F0F7A0044A2B2 /* ErrorHandle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandle.swift; sourceTree = "<group>"; };
 		B948CB63255C5EAB006118CF /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		B948CB66255C61E3006118CF /* BaseVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseVC.swift; sourceTree = "<group>"; };
 		B948CB69255C7AAD006118CF /* screenshot3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = screenshot3.png; sourceTree = "<group>"; };
@@ -79,8 +83,18 @@
 		B918D723255F0DA70044A2B2 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				B918D727255F0ECB0044A2B2 /* Photo.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		B918D72A255F0F3C0044A2B2 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				B948CB63255C5EAB006118CF /* Constants.swift */,
+				B918D72B255F0F7A0044A2B2 /* ErrorHandle.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		B948CB76255CA1A0006118CF /* API */ = {
@@ -116,6 +130,7 @@
 		B94D6496255B299C002AAD38 /* Unsplash_with_storyboard_tutorial */ = {
 			isa = PBXGroup;
 			children = (
+				B918D72A255F0F3C0044A2B2 /* Utils */,
 				B918D723255F0DA70044A2B2 /* Model */,
 				B948CB76255CA1A0006118CF /* API */,
 				B94D64BA255B836B002AAD38 /* ViewControllers */,
@@ -129,7 +144,6 @@
 				B94D64A0255B299E002AAD38 /* Assets.xcassets */,
 				B94D64A2255B299E002AAD38 /* LaunchScreen.storyboard */,
 				B94D64A5255B299E002AAD38 /* Info.plist */,
-				B948CB63255C5EAB006118CF /* Constants.swift */,
 			);
 			path = Unsplash_with_storyboard_tutorial;
 			sourceTree = "<group>";
@@ -278,11 +292,13 @@
 				B94D6498255B299C002AAD38 /* AppDelegate.swift in Sources */,
 				B948CB7B255CA3F9006118CF /* BaseInterceptor.swift in Sources */,
 				B94D649A255B299C002AAD38 /* SceneDelegate.swift in Sources */,
+				B918D728255F0ECB0044A2B2 /* Photo.swift in Sources */,
 				B94D64B2255B2D9B002AAD38 /* UserListVC.swift in Sources */,
 				B948CB7E255CC30E006118CF /* Logger.swift in Sources */,
 				B948CB78255CA1E2006118CF /* AlamofireManager.swift in Sources */,
 				B94D64B5255B2DDE002AAD38 /* PhotoCollectionVC.swift in Sources */,
 				B948CB67255C61E3006118CF /* BaseVC.swift in Sources */,
+				B918D72C255F0F7A0044A2B2 /* ErrorHandle.swift in Sources */,
 				B948CB64255C5EAB006118CF /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

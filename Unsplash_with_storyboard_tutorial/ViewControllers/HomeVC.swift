@@ -38,24 +38,47 @@ class HomeVC: BaseVC, UISearchBarDelegate, UIGestureRecognizerDelegate {
         
         switch searchSegment.selectedSegmentIndex {
         case 0:
-            urlToCall = SearchRouter.searchPhotos(term: userInput)
+            //urlToCall = SearchRouter.searchPhotos(term: userInput)
+        AlamofireManager
+            .shared
+            //If you want to use "self" in closer, you should weak self the reason are
+            //                                   // 클로저 arc
+            // automatic reference count
+            // 자동 메모리사용수 계산
+            // stack, heap 메모리 영역
+            // class, closure 등이 사용
+            // weak self
+            // self 는 메모리 카운트를 증가
+            // weak self 를 통해 메모리를 가지고 있는 것을 방지
+            // 다음과 같이  self.메소드등 self 를 사용해야 하는 경우 weak self 로 메모리에 계속 잡고 두고 있는 것을 방지
+            .getPhotos(searchTerm: userInput, completion: {
+                [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success(let fetchedPhotos):
+                    print("HomeVC - getPhotos.success", fetchedPhotos.count)
+                case .failure(let error):
+                    print("HomeVC - getPhotos.failure - error : \(error.rawValue)")
+                    self.view.makeToast(error.rawValue, duration: 2.0, position: .center)
+                }
+            })
         default:
             urlToCall = SearchRouter.searchUsers(term: userInput)
         }
         
-        if let urlConvertible = urlToCall {
-            //For use router, header and public params
-        AlamofireManager
-            .shared
-            .session
-            .request(urlConvertible)
-            //
-            .validate(statusCode: 200..<401)
-            .responseJSON(completionHandler: { response in
-                debugPrint(response)
-            })
-        //pushVC()
-    }
+//        if let urlConvertible = urlToCall {
+//            //For use router, header and public params
+//        AlamofireManager
+//            .shared
+//            .session
+//            .request(urlConvertible)
+//            //
+//            .validate(statusCode: 200..<401)
+//            .responseJSON(completionHandler: { response in
+//                debugPrint(response)
+//            })
+//        //pushVC()
+//    }
     }
     
     @IBAction func filterValueChanged(_ sender: UISegmentedControl) {

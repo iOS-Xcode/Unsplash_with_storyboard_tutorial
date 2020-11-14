@@ -7,6 +7,7 @@
 
 import Foundation
 import Alamofire
+import SwiftyJSON
 
 final class AlamofireManager {
     //Singleton conform
@@ -20,5 +21,43 @@ final class AlamofireManager {
     
     private init() {
         session = Session(interceptor : interceptors, eventMonitors: monitors)
+    }
+    
+    //completion block, return Result type.
+    func getPhotos(searchTerm userInput: String, completion: @escaping (Result<[Photo], ErrorHandle>) -> Void) {
+        print("AlamofireManager - getPhotos() called", userInput)
+        
+        self.session
+            .request(SearchRouter.searchPhotos(term: userInput))
+            .validate(statusCode: 200..<401)
+            .responseJSON(completionHandler: { response in
+                guard let responseValue = response.value else { return }
+                
+                let responseJson = JSON(responseValue)
+                
+                let jsonArray = responseJson["results"]
+                
+                var photos = [Photo]()
+                
+                print("jsonArray.count",jsonArray.count)
+                
+                for (index, subJson): (String, JSON) in jsonArray {
+                    print("index: \(index) , subJson : \(subJson)")
+                    
+                    //Data parsing
+                    let thumnail = subJson["urls"]["thumb"].string ?? ""
+                    let username = subJson["user"]["username"].string ?? ""
+                    let likesCount = subJson["likes"].intValue
+                    let createdAt = subJson["created_at"].string ?? ""
+                    
+                    let photoItem = Photo(thumnail: thumnail, userName: username, likesCount: likesCount, createdAt: createdAt)
+                    photos.append(photoItem)
+                }
+                if photos.count > 0 {
+                    completion(.success(photos))
+                } else {
+                    completion(.failure(.noContent))
+                }
+            })
     }
 }

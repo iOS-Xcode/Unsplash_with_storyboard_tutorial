@@ -30,7 +30,6 @@ final class AlamofireManager {
         self.session
             .request(SearchRouter.searchPhotos(term: userInput))
             .validate(statusCode: 200..<401)
-            //.responseDecodable(completionHandler: { response in
             //.responseJSON(completionHandler: { response in
             .responseDecodable(of: Photo.self) { response in
                 

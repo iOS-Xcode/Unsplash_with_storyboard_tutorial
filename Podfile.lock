@@ -1,5 +1,5 @@
 PODS:
-  - Alamofire (5.4.0)
+  - Alamofire (5.6.1)
   - SwiftyJSON (4.3.0)
   - Toast-Swift (5.0.1)
 
@@ -15,10 +15,10 @@ SPEC REPOS:
     - Toast-Swift
 
 SPEC CHECKSUMS:
-  Alamofire: 3b6a534a3df22db367e4dedeeca73d1ddfcf0e2f
+  Alamofire: 87bd8c952f9a4454320fce00d9cc3de57bcadaf5
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
   Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
 
 PODFILE CHECKSUM: 2522fd783d0cd8be668405cd51420252b1f55db1
 
-COCOAPODS: 1.10.0
+COCOAPODS: 1.11.3

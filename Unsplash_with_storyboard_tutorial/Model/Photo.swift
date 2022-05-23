@@ -7,9 +7,9 @@
 
 import Foundation
 
-struct Photo : Codable {
-    var thumnail : String
-    var userName : String
-    var likesCount : Int
-    var createdAt : String
+struct Photo : Decodable {
+    var thumb : String
+    var username : String
+    var likes : Int
+    var created_at : String
 }

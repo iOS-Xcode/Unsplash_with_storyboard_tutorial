@@ -11,7 +11,7 @@ import Alamofire
 
 class HomeVC: BaseVC, UISearchBarDelegate, UIGestureRecognizerDelegate {
     
-    var keyboardDismissTapGesture : UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: nil)
+    var keyboardDismissTapGesture : UITapGestureRecognizer = UITapGestureRecognizer(target: HomeVC.self, action: nil)
     
     @IBOutlet weak var searchSegment: UISegmentedControl!
     @IBOutlet weak var searchBar: UISearchBar!
@@ -59,11 +59,14 @@ class HomeVC: BaseVC, UISearchBarDelegate, UIGestureRecognizerDelegate {
                     print("HomeVC - getPhotos.success", fetchedPhotos.count)
                 case .failure(let error):
                     print("HomeVC - getPhotos.failure - error : \(error.rawValue)")
+                    //밑의 self는 약한 참조로..[weak self]에 의해
                     self.view.makeToast(error.rawValue, duration: 2.0, position: .center)
                 }
             })
-        default:
+        case 1:
             urlToCall = SearchRouter.searchUsers(term: userInput)
+        default:
+            print("default")
         }
         
 //        if let urlConvertible = urlToCall {
@@ -86,14 +89,16 @@ class HomeVC: BaseVC, UISearchBarDelegate, UIGestureRecognizerDelegate {
         switch sender.selectedSegmentIndex {
         case 0:
             searchBarTitle = "Photo keyword"
-        default:
+        case 1:
             searchBarTitle = "User name"
+        default:
+            searchBarTitle = "Keyword of photo"
         }
         searchBar.placeholder = "Input " + searchBarTitle
         //Focus search bar
         searchBar.becomeFirstResponder()
         //release focus
-        searchBar.resignFirstResponder()
+        //searchBar.resignFirstResponder()
     }
     
     fileprivate func pushVC() {
@@ -144,6 +149,7 @@ class HomeVC: BaseVC, UISearchBarDelegate, UIGestureRecognizerDelegate {
         super.viewWillAppear(animated)
         
         //Basically, It provides notification when keyboard show up as UIResponder.keyboardWillShowNotification
+        //즉 iOS에서 키보드가 올라가는 것을 알려줌.
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowHandle(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideHandle(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
@@ -162,6 +168,7 @@ class HomeVC: BaseVC, UISearchBarDelegate, UIGestureRecognizerDelegate {
             
             if keyboardSize.height < searchButton.frame.origin.y {
                 let distance = keyboardSize.height - searchButton.frame.origin.y
+                //키보드가 덮은 만큼 올려줌.
                 view.frame.origin.y = distance + searchButton.frame.height
             }
         }
@@ -185,7 +192,7 @@ class HomeVC: BaseVC, UISearchBarDelegate, UIGestureRecognizerDelegate {
     //MARK: - UIGestureRecognizerDelegate
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        //if touch on searchSegment
+        //if touch on searchSegment or searchBar, Descendant : 자손
         if (touch.view?.isDescendant(of: searchSegment) == true) || (touch.view?.isDescendant(of: searchBar) == true) {
             return false
         } else {
@@ -221,8 +228,11 @@ class HomeVC: BaseVC, UISearchBarDelegate, UIGestureRecognizerDelegate {
     }
     
     func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        
         //add a text on current string
         let inputTextCount = searchBar.text?.appending(text).count ?? 0
+        print("shouldChangeTextIn : \(inputTextCount) / text : \(text)")
+
         //In case of length >= 12
         if inputTextCount >= 12 {
             //emoji ctrl + command + space

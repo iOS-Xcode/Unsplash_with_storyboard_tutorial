@@ -35,7 +35,7 @@ class BaseVC: UIViewController {
         if let data = notification.userInfo?["statusCode"] {
             print("showErrorPopup() data: \(data)")
             
-            // 메인쓰레드에서 돌리기 즉 Ui 스레드
+            // 메인쓰레드에서 돌리기 즉 Ui는 메인 스레드에서.
             DispatchQueue.main.async {
                 self.view.makeToast("☠️ \(data) 에러 입니다.", duration: 1.5, position: .center)
             }

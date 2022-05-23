@@ -49,6 +49,7 @@ enum SearchRouter: URLRequestConvertible {
     
     //throws ~ try - does not need to do ~ catch
     func asURLRequest() throws -> URLRequest {
+        //문자열을 붙임.
         let url = baseURL.appendingPathComponent(endPoint)
         print("SearchRouter - asURLRequest() url : \(url)")
         var request = URLRequest(url: url)

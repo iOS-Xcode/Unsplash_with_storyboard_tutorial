@@ -12,9 +12,9 @@ import SwiftyJSON
 final class AlamofireManager {
     //Singleton conform
     static let shared = AlamofireManager()
-    //Interceptors multi possiable
+    //Interceptors multi possiable, 공통파라미터, 헤더에 뭘 추가한다는 지.
     let interceptors = Interceptor(interceptors: [BaseInterceptor()])
-    //multi possiable log
+    //multi possiable log, 이벤트 모니터
     let monitors = [Logger(), StatusLogger()] as [EventMonitor]
     //Session
     var session : Session
@@ -30,8 +30,11 @@ final class AlamofireManager {
         self.session
             .request(SearchRouter.searchPhotos(term: userInput))
             .validate(statusCode: 200..<401)
-            .responseJSON(completionHandler: { response in
-                guard let responseValue = response.value else { return }
+            //.responseDecodable(completionHandler: { response in
+            //.responseJSON(completionHandler: { response in
+            .responseDecodable(of: Photo.self) { response in
+                
+                guard let responseValue = response.data else { return }
                 
                 let responseJson = JSON(responseValue)
                 
@@ -45,19 +48,25 @@ final class AlamofireManager {
                     print("index: \(index) , subJson : \(subJson)")
                     
                     //Data parsing
-                    let thumnail = subJson["urls"]["thumb"].string ?? ""
-                    let username = subJson["user"]["username"].string ?? ""
-                    let likesCount = subJson["likes"].intValue
-                    let createdAt = subJson["created_at"].string ?? ""
+//                    let thumnail = subJson["urls"]["thumb"].string ?? ""
+//                    let username = subJson["user"]["username"].string ?? ""
+//                    let likesCount = subJson["likes"].intValue
+//                    let createdAt = subJson["created_at"].string ?? ""
+                    guard let thumnail = subJson["urls"]["thumb"].string,
+                          let username = subJson["user"]["username"].string,
+                          let createdAt = subJson["created_at"].string else { return }
                     
-                    let photoItem = Photo(thumnail: thumnail, userName: username, likesCount: likesCount, createdAt: createdAt)
+                    let likesCount = subJson["likes"].intValue
+                    
+                    let photoItem = Photo(thumb: thumnail, username: username, likes: likesCount, created_at: createdAt)
                     photos.append(photoItem)
+                    print("photos.count",photos.count)
                 }
                 if photos.count > 0 {
                     completion(.success(photos))
                 } else {
                     completion(.failure(.noContent))
                 }
-            })
+            }
     }
 }
